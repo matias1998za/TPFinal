@@ -1,8 +1,7 @@
 #! /usr/bin/python3
 from repositorio import Repositorio
-from clienteParticular import ClienteParticular
-from clienteCorporativo import ClienteCorporativo
-
+from clienteParticular import ClientePart
+from clienteCorporativo import ClienteCorp
 class RepositorioClientes(Repositorio):
     '''Gestiona el almacenamiento de los clientes en la Base de Datos.'''
 
@@ -31,7 +30,7 @@ class RepositorioClientes(Repositorio):
         '''Recibe un id de cliente (número entero). Retorna un cliente
         Corporativo. Si no lo encuentra, retorna None.'''
         consulta = "SELECT  cc.nombre_empresa, cc.nombre_contacto, \
-                            cc.telefono_contacto c.telefono, c.mail\
+                            cc.telefono_contacto, c.telefono, c.mail\
                     FROM cliente c \
                     JOIN cliente_corporativo cc ON c.id = cc.id_cliente \
                     WHERE c.id = ?"
@@ -39,7 +38,7 @@ class RepositorioClientes(Repositorio):
         if result == None:
             return None
         else:
-            return ClienteCorporativo(result[0], 
+            return ClienteCorp(result[0],
                                       result[1], 
                                       result[2],
                                       result[3], 
@@ -57,7 +56,7 @@ class RepositorioClientes(Repositorio):
         if result == None:
             return None
         else:
-            return ClienteParticular(result[0], result[1], result[2], 
+            return ClientePart(result[0], result[1], result[2],
                                       result[3], id_cliente);
         
     
@@ -78,7 +77,7 @@ class RepositorioClientes(Repositorio):
         todos_los_clientes = self.cursor.fetchall()
         for id_cliente, nombre, apellido, telefono, mail in todos_los_clientes:
             lista_clientes.append(
-                ClienteParticular(nombre, apellido, telefono, mail, id_cliente)
+                ClientePart(nombre, apellido, telefono, mail, id_cliente)
                 )
         return lista_clientes
 
@@ -96,7 +95,7 @@ class RepositorioClientes(Repositorio):
         for id_cliente, empresa, contacto, telefono_contacto, \
                          telefono_empresa, mail_empresa in todos_los_clientes:
             lista_clientes.append(
-                ClienteCorporativo(empresa,
+                ClienteCorp(empresa,
                                   contacto,
                                   telefono_contacto,
                                   telefono_empresa,
